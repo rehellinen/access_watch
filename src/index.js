@@ -37,7 +37,7 @@ class Excel {
 
     async http (postData) {
         if (!postData) return
-        const {data} = axios.post(config.api_url, {
+        const {data} = await axios.post(config.api_url, {
             data: postData
         })
         log(data)
