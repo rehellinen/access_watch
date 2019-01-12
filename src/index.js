@@ -5,5 +5,9 @@
  */
 
 import {config} from "./config"
+import {readFileSync} from 'fs'
+import xlsx from 'node-xlsx'
 
-console.log(config.excel_dir)
+const excel = xlsx.parse(readFileSync(`${config.excel_dir}/test.xls`))
+
+console.log(excel[0].data[1])
