@@ -9,6 +9,7 @@ const r = path => resolve(__dirname, '../../', path)
 
 const config = {
     excel_dir: r('excel'),
+    api_url: 'test',
     row: {
         start: 4,
         end: 8

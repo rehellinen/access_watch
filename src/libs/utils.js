@@ -13,4 +13,8 @@ const getDataByRowColumn = (data, row, column) => {
     return res
 }
 
-export {getDataByRowColumn}
+const log = (...rest) => {
+    console.log(...rest)
+}
+
+export {getDataByRowColumn, log}

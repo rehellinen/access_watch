@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/rehellinen/excel_watch#readme",
   "dependencies": {
+    "axios": "^0.18.0",
+    "chokidar": "^2.0.4",
     "node-xlsx": "^0.12.1"
   },
   "devDependencies": {

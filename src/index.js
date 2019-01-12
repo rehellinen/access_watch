@@ -5,13 +5,43 @@
  */
 import {readFileSync} from 'fs'
 import xlsx from 'node-xlsx'
+import chokidar from 'chokidar'
+import axios from 'axios'
 
 import {config} from "./config"
-import {getDataByRowColumn} from "./libs/utils"
+import {getDataByRowColumn, log} from "./libs/utils"
 
-// 读取完整excel
-const excel = xlsx.parse(readFileSync(`${config.excel_dir}/test.xls`))
-// 获取所需部分
-const res = getDataByRowColumn(excel[0].data, config.row, config.column)
+class Excel {
+    start () {
+        this.watch()
+    }
 
-console.log(res)
+    watch () {
+        const watcher = chokidar.watch(config.excel_dir, {})
+        // 检测文件增加
+        watcher.on('add', path => {
+            const excelRes = this.readExcel(path)
+            this.http(excelRes)
+        })
+    }
+
+    readExcel (path) {
+        if (!(path.endsWith('xls') || path.endsWith('xlsx'))) {
+            return
+        }
+        // 读取完整excel
+        const excel = xlsx.parse(readFileSync(path))
+        // 获取所需部分
+        return getDataByRowColumn(excel[0].data, config.row, config.column)
+    }
+
+    async http (postData) {
+        if (!postData) return
+        const {data} = axios.post(config.api_url, {
+            data: postData
+        })
+        log(data)
+    }
+}
+
+new Excel().start()
